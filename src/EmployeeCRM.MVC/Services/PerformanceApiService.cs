@@ -16,6 +16,9 @@ namespace EmployeeCRM.MVC.Services
         public async Task<DashboardDto?> GetDashboardAsync() =>
             await GetAsync<DashboardDto>("performance/dashboard");
 
+        public async Task<PerformanceDto?> GetByIdAsync(int id) =>
+            await GetAsync<PerformanceDto>($"performance/{id}");
+
         public async Task<PerformanceDto?> CreateAsync(CreatePerformanceDto dto) =>
             await PostAsync<PerformanceDto>("performance", dto);
 

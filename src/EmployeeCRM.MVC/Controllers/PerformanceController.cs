@@ -77,5 +77,23 @@ namespace EmployeeCRM.MVC.Controllers
             TempData["Success"] = "Performance review added successfully.";
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
+            if (UserRole != "Admin") return Forbid();
+            var review = await _perfService.GetByIdAsync(id);
+            if (review == null) return NotFound();
+            return View(review);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _perfService.DeleteAsync(id);
+            TempData["Success"] = "Performance review deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

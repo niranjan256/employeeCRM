@@ -15,14 +15,14 @@ namespace EmployeeCRM.API.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    ContactPerson = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false),
-                    Industry = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ContactPerson = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Industry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,16 +33,16 @@ namespace EmployeeCRM.API.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false),
-                    Department = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Designation = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    DateOfJoining = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Department = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Designation = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DateOfJoining = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,12 +53,12 @@ namespace EmployeeCRM.API.Migrations
                 name: "AppUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
-                    Role = table.Column<string>(type: "TEXT", nullable: false),
-                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,12 +75,12 @@ namespace EmployeeCRM.API.Migrations
                 name: "EmployeeClients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClientId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AssignedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    AssignedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,17 +103,17 @@ namespace EmployeeCRM.API.Migrations
                 name: "EmployeeTasks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    AssignedToEmployeeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AssignedByEmployeeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Priority = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CompletedDate = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssignedToEmployeeId = table.Column<int>(type: "int", nullable: false),
+                    AssignedByEmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Priority = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CompletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -136,14 +136,14 @@ namespace EmployeeCRM.API.Migrations
                 name: "PerformanceReviews",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ReviewerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Rating = table.Column<int>(type: "INTEGER", nullable: false),
-                    Comments = table.Column<string>(type: "TEXT", nullable: false),
-                    ReviewPeriod = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ReviewDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    ReviewerId = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReviewPeriod = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -166,7 +166,8 @@ namespace EmployeeCRM.API.Migrations
                 name: "IX_AppUsers_EmployeeId",
                 table: "AppUsers",
                 column: "EmployeeId",
-                unique: true);
+                unique: true,
+                filter: "[EmployeeId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppUsers_Username",

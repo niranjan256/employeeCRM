@@ -1,0 +1,56 @@
+@model EmployeeCRM.Shared.DTOs.PerformanceDto
+@{
+    ViewData["Title"] = "Delete Performance Review";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger shadow-sm glass-card">
+            <div class="card-body p-4 p-md-5 text-center">
+                <div class="text-danger mb-4">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 4rem;"></i>
+                </div>
+
+                <h3 class="fw-bold mb-3">Delete Performance Review?</h3>
+                <p class="text-muted fs-5 mb-4">Are you sure you want to permanently delete this review for <strong>@Model.EmployeeName</strong>?</p>
+
+                <div class="card bg-light border-0 text-start mb-4">
+                    <div class="card-body py-3 px-4">
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span class="text-muted">Review Period</span>
+                            <span class="fw-medium">@Model.ReviewPeriod</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span class="text-muted">Rating</span>
+                            <span class="fw-medium text-warning">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= Model.Rating) { <i class="fa-solid fa-star"></i> }
+                                    else { <i class="fa-regular fa-star"></i> }
+                                }
+                                (@Model.Rating/5)
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">Reviewed By</span>
+                            <span class="fw-medium">@Model.ReviewerName</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning text-start" role="alert">
+                    <i class="fa-solid fa-circle-info me-2"></i>
+                    This action is <strong>permanent</strong>. The performance review record will be removed and cannot be recovered.
+                </div>
+
+                <form asp-action="Delete" method="post" class="mt-4">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="d-flex justify-content-center gap-3">
+                        <a asp-action="Index" class="btn btn-light border px-4">Cancel</a>
+                        <button type="submit" class="btn btn-danger px-4"><i class="fa-solid fa-trash me-2"></i>Yes, Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

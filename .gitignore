@@ -33,7 +33,7 @@ project.fragment.lock.json
 artifacts/
 .nuget/
 
-# SQLite database files
+# SQLite database files (no longer used — project uses SQL Server)
 *.db
 *.db-shm
 *.db-wal
@@ -52,5 +52,13 @@ desktop.ini
 .idea/
 *.sln.iml
 
-# ASP.NET Core
-wwwroot/lib/
+# Secrets (never commit these)
+**/secrets.json
+**/*.pfx
+**/*.p12
+.env
+.env.*
+
+# NOTE: wwwroot/lib/ is intentionally NOT excluded here.
+# There is no libman.json in this project, so Bootstrap/jQuery
+# must be committed and are tracked by Git.

@@ -27,6 +27,7 @@
                         <th>Feedback</th>
                         <th>Reviewer</th>
                         <th>Date</th>
+                        @if (role == "Admin") { <th></th> }
                     </tr>
                 </thead>
                 <tbody class="border-top-0">
@@ -51,6 +52,12 @@
                             <td><span class="text-muted d-inline-block text-truncate" style="max-width: 200px;" title="@item.Comments">@item.Comments</span></td>
                             <td><small class="text-muted">@item.ReviewerName</small></td>
                             <td>@item.ReviewDate.ToString("MMM dd, yyyy")</td>
+                            @if (role == "Admin")
+                            {
+                                <td>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

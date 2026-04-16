@@ -1,5 +1,6 @@
 using EmployeeCRM.API.Services.Interfaces;
 using EmployeeCRM.Shared.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeCRM.API.Controllers
@@ -21,8 +22,9 @@ namespace EmployeeCRM.API.Controllers
             return Ok(response);
         }
 
-        /// <summary>Register a new user (Admin only in production)</summary>
+        /// <summary>Register a new user (Admin only)</summary>
         [HttpPost("register")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
