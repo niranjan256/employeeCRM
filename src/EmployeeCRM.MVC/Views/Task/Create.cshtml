@@ -1,0 +1,67 @@
+@model EmployeeCRM.Shared.DTOs.CreateTaskDto
+@{
+    ViewData["Title"] = "Assign Task";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm glass-card">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold m-0"><i class="fa-solid fa-clipboard-list text-primary me-2"></i>New Task</h4>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i>Back to Tasks</a>
+                </div>
+
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-medium">Task Title</label>
+                        <input asp-for="Title" class="form-control" placeholder="Brief summary of the task..." />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label fw-medium">Detailed Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Provide full context..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <label asp-for="AssignedToEmployeeId" class="form-label fw-medium">Assign To</label>
+                            <select asp-for="AssignedToEmployeeId" class="form-select" asp-items="ViewBag.Employees">
+                                <option value="">-- Select Employee --</option>
+                            </select>
+                            <span asp-validation-for="AssignedToEmployeeId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Priority" class="form-label fw-medium">Priority</label>
+                            <select asp-for="Priority" class="form-select">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                            <span asp-validation-for="Priority" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="DueDate" class="form-label fw-medium">Due Date</label>
+                            <input asp-for="DueDate" type="date" class="form-control" />
+                            <span asp-validation-for="DueDate" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                        <button type="submit" class="btn btn-primary-custom px-4"><i class="fa-solid fa-paper-plane me-2"></i>Assign Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

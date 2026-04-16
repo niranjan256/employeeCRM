@@ -1,0 +1,87 @@
+@model IEnumerable<EmployeeCRM.Shared.DTOs.EmployeeTaskDto>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Task Management";
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+}
+
+<div class="card border-0 shadow-sm glass-card">
+    <div class="card-body p-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <form class="d-flex flex-grow-1" style="max-width: 300px;" method="get">
+                <div class="input-group">
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Statuses</option>
+                        <option value="Pending" selected="@(ViewBag.Status == "Pending")">Pending</option>
+                        <option value="InProgress" selected="@(ViewBag.Status == "InProgress")">In Progress</option>
+                        <option value="Completed" selected="@(ViewBag.Status == "Completed")">Completed</option>
+                    </select>
+                </div>
+            </form>
+
+            @if (role != "Employee")
+            {
+                <a asp-action="Create" class="btn btn-primary-custom"><i class="fa-solid fa-plus me-2"></i>Assign Task</a>
+            }
+        </div>
+
+        <div class="row g-4">
+            @if (!Model.Any())
+            {
+                <div class="col-12 text-center text-muted py-5">
+                    <i class="fa-solid fa-clipboard-check fs-1 mb-3 opacity-50"></i>
+                    <p>No tasks found.</p>
+                </div>
+            }
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-xl-4">
+                    <div class="card h-100 shadow-sm border text-start @(item.Status == "Completed" ? "bg-light border-success" : "")">
+                        <div class="card-body position-relative">
+                            
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="fw-bold text-dark mb-0 pe-4 text-truncate" title="@item.Title">@item.Title</h5>
+                                 @{
+                                     var badgeClass = item.Status switch {
+                                         "Completed" => "bg-success",
+                                         "InProgress" => "bg-info text-dark",
+                                         _ => "bg-warning text-dark"
+                                     };
+                                 }
+                                 <span class="badge @badgeClass position-absolute top-0 end-0 mt-3 me-3">@item.Status</span>
+                            </div>
+
+                            <p class="text-muted small mb-3 text-truncate" title="@item.Description">@item.Description</p>
+                            
+                            <div class="d-flex align-items-center mb-2 small">
+                                <i class="fa-regular fa-user me-2 text-primary"></i> <span class="text-muted">Assigned to:</span> <strong class="ms-1">@item.AssignedToEmployeeName</strong>
+                            </div>
+                            <div class="d-flex align-items-center mb-3 small">
+                                <i class="fa-regular fa-calendar-xmark me-2 text-danger"></i> <span class="text-muted">Due:</span> <strong class="ms-1 text-danger">@item.DueDate.ToString("MMM dd, yyyy")</strong>
+                            </div>
+
+                            <hr class="my-3 opacity-25">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border">Priority: @item.Priority</span>
+                                <div>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen me-1"></i>Update</a>
+                                    @if(role != "Employee")
+                                    {
+                                        <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Delete this task?');">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

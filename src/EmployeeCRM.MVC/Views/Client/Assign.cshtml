@@ -1,0 +1,65 @@
+@model EmployeeCRM.Shared.DTOs.AssignClientDto
+@{
+    ViewData["Title"] = "Assign Client";
+    var employees = ViewBag.Employees as IEnumerable<EmployeeCRM.Shared.DTOs.EmployeeDto>;
+    var clients = ViewBag.Clients as IEnumerable<EmployeeCRM.Shared.DTOs.ClientDto>;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm glass-card">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px;">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <h4 class="fw-bold m-0">Assign Client to Employee</h4>
+                    <p class="text-muted small">Link a corporate client with an account manager</p>
+                </div>
+
+                <form asp-action="Assign" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="ClientId" class="form-label fw-medium"><i class="fa-solid fa-building me-2 text-primary"></i>Select Client</label>
+                        <select asp-for="ClientId" class="form-select form-select-lg">
+                            <option value="">-- Choose a Client --</option>
+                            @if (clients != null)
+                            {
+                                foreach (var c in clients)
+                                {
+                                    <option value="@c.Id">@c.CompanyName (@c.Industry)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="ClientId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-5">
+                        <label asp-for="EmployeeId" class="form-label fw-medium"><i class="fa-solid fa-user-tie me-2 text-primary"></i>Assign to Employee</label>
+                        <select asp-for="EmployeeId" class="form-select form-select-lg">
+                            <option value="">-- Choose an Employee --</option>
+                            @if (employees != null)
+                            {
+                                foreach (var e in employees)
+                                {
+                                    <option value="@e.Id">@e.FullName - @e.Department</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="EmployeeId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary-custom btn-lg"><i class="fa-solid fa-check me-2"></i>Link Records</button>
+                        <a asp-action="Index" class="btn btn-light border mt-2">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

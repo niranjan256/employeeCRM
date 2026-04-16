@@ -1,0 +1,60 @@
+@model IEnumerable<EmployeeCRM.Shared.DTOs.PerformanceDto>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Performance Reviews";
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+}
+
+<div class="card border-0 shadow-sm glass-card">
+    <div class="card-body p-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold m-0"><i class="fa-solid fa-star-half-stroke text-primary me-2"></i>Performance History</h5>
+            @if (role != "Employee")
+            {
+                <a asp-action="Create" class="btn btn-primary-custom"><i class="fa-solid fa-plus me-2"></i>Add Review</a>
+            }
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Period</th>
+                        <th>Rating</th>
+                        <th>Feedback</th>
+                        <th>Reviewer</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody class="border-top-0">
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-4">No reviews recorded.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-medium text-dark">@item.EmployeeName</td>
+                            <td><span class="badge bg-light text-dark border">@item.ReviewPeriod</span></td>
+                            <td>
+                                <div class="text-warning">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= item.Rating) { <i class="fa-solid fa-star"></i> }
+                                        else { <i class="fa-regular fa-star"></i> }
+                                    }
+                                </div>
+                            </td>
+                            <td><span class="text-muted d-inline-block text-truncate" style="max-width: 200px;" title="@item.Comments">@item.Comments</span></td>
+                            <td><small class="text-muted">@item.ReviewerName</small></td>
+                            <td>@item.ReviewDate.ToString("MMM dd, yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

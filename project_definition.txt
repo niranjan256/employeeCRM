@@ -1,0 +1,72 @@
+Project Title:Multi-Page Employee CRM 
+System (ASP.NET Core MVC with Web API 
+Backend) 
+Problem Statement 
+Small and medium-sized organizations often struggle to manage employee information, 
+assigned clients, task tracking, and performance monitoring efficiently. Many companies still 
+rely on spreadsheets or manual record-keeping systems, which lead to: 
+● Data duplication and inconsistency 
+● Difficulty in tracking employee-client relationships 
+● Limited reporting and performance insights 
+● Poor data security and access control 
+● Lack of scalability for growing teams 
+To overcome these challenges, there is a need for a centralized, secure, and scalable 
+Employee CRM (Customer Relationship Management) System that can manage 
+employee records and related business operations efficiently. 
+Proposed Solution 
+Develop a multi-page web-based Employee CRM System using: 
+● ASP.NET Core MVC (Frontend UI) 
+● ASP.NET Core Web API (Backend service layer) 
+● Entity Framework Core 
+● SQL Server Database 
+● LINQ for data operations 
+The system will follow a clean architecture approach where the MVC application consumes 
+the backend RESTful API for all CRUD operations. 
+System Objectives 
+The system should allow administrators and managers to: 
+1. Manage employee records (Create, Read, Update, Delete) 
+2. Assign and manage clients for each employee 
+3. Track employee tasks and status 
+4. Monitor employee performance metrics 
+5. Generate basic reports 
+6. Secure data using authentication and role-based authorization 
+7. Provide smooth navigation across multiple pages 
+Functional Requirements 
+1 ⃣ Employee Management 
+● Add new employees 
+● Edit employee details 
+● Delete employees 
+● View employee list with search and filter 
+2 ⃣ Client Management 
+● Add and manage clients 
+● Assign clients to employees 
+● View client history 
+3 ⃣ Task Management 
+● Assign tasks to employees 
+● Update task status (Pending, In Progress, Completed) 
+● Track deadlines 
+4 ⃣ Performance Tracking 
+● View employee performance dashboard 
+● Monitor completed tasks 
+● Track client engagement 
+5 ⃣ Authentication & Authorization 
+● Login/Logout functionality 
+● Role-based access (Admin, Manager, Employee) 
+Technical Constraints 
+● Use ASP.NET Core MVC for UI 
+● Use ASP.NET Core Web API for backend services 
+● Implement RESTful APIs 
+● Use Entity Framework Core with Code-First approach 
+● Perform database operations using LINQ 
+● Use proper layered architecture (Controller → Service → Repository → Database) 
+● Implement Dependency Injection 
+● Use proper exception handling and validation 
+Expected Outcome 
+The final application should: 
+● Be a fully functional multi-page web application 
+● Demonstrate API integration with MVC 
+● Follow clean coding standards and best practices 
+● Be scalable and maintainable 
+● Provide secure and structured employee data management
+
+

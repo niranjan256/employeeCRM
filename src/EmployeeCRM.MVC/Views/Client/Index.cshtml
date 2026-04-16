@@ -1,0 +1,77 @@
+@model IEnumerable<EmployeeCRM.Shared.DTOs.ClientDto>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Clients";
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+}
+
+<div class="card border-0 shadow-sm glass-card">
+    <div class="card-body p-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <form class="d-flex flex-grow-1" style="max-width: 400px;" method="get">
+                <div class="input-group">
+                    <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search company...">
+                    <button type="submit" class="btn btn-secondary px-4"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    @if (ViewBag.Search != null)
+                    {
+                         <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+                    }
+                </div>
+            </form>
+
+            @if (role != "Employee")
+            {
+                <div>
+                     <a asp-action="Assign" class="btn btn-outline-primary me-2"><i class="fa-solid fa-link me-2"></i>Assign Client</a>
+                     <a asp-action="Create" class="btn btn-primary-custom"><i class="fa-solid fa-plus me-2"></i>New Client</a>
+                </div>
+            }
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Contact Person</th>
+                        <th>Email</th>
+                        <th>Industry</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="border-top-0">
+                     @if (!Model.Any())
+                    {
+                        <tr><td colspan="5" class="text-center text-muted py-4">No clients found.</td></tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-dark">@item.CompanyName</div>
+                                <div class="small text-muted">ID: #@item.Id</div>
+                            </td>
+                            <td>@item.ContactPerson</td>
+                            <td><i class="fa-regular fa-envelope me-2 text-muted"></i>@item.Email</td>
+                            <td><span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-2 py-1">@item.Industry</span></td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-light border text-primary" title="View Details"><i class="fa-solid fa-eye"></i></a>
+                                
+                                @if (role != "Employee")
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-light border text-secondary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                                    @if (role == "Admin")
+                                    {
+                                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-light border text-danger" title="Delete"><i class="fa-solid fa-trash"></i></a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

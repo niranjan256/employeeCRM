@@ -1,0 +1,56 @@
+## .NET / C# gitignore
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+.nuget/
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+
+# User-specific files
+*.rsuser
+*.userosscache
+*.sln.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Rider
+.idea/
+*.sln.iml
+
+# ASP.NET Core
+wwwroot/lib/

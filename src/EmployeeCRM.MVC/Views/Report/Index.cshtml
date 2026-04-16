@@ -1,0 +1,154 @@
+@{
+    ViewData["Title"] = "Business Intelligence Reports";
+    var taskSum = ViewBag.TaskSummary as IEnumerable<EmployeeCRM.Shared.DTOs.TaskSummaryReport>;
+    var empSum = ViewBag.EmployeeSummary as IEnumerable<EmployeeCRM.Shared.DTOs.EmployeeSummaryReport>;
+    var clientEng = ViewBag.ClientEngagement as IEnumerable<EmployeeCRM.Shared.DTOs.ClientEngagementReport>;
+}
+
+<!-- Tasks Alert -->
+@if (taskSum != null && taskSum.Any(t => t.OverdueTasks > 0))
+{
+    var totalOverdue = taskSum.Sum(t => t.OverdueTasks);
+    <div class="alert alert-danger shadow-sm border-0 border-start border-danger border-4 d-flex align-items-center mb-4">
+        <i class="fa-solid fa-triangle-exclamation fs-3 me-3"></i>
+        <div>
+            <h5 class="alert-heading fw-bold mb-1">Attention Required</h5>
+            <p class="mb-0">There are currently <strong>@totalOverdue</strong> overdue tasks in the system.</p>
+        </div>
+    </div>
+}
+
+<ul class="nav nav-pills mb-4 gap-2" id="reportTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active glass-panel border fw-medium" id="employee-tab" data-bs-toggle="tab" data-bs-target="#employee" type="button" role="tab">Employee Performance</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link glass-panel border fw-medium" id="client-tab" data-bs-toggle="tab" data-bs-target="#client" type="button" role="tab">Client Engagement</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link glass-panel border fw-medium" id="task-tab" data-bs-toggle="tab" data-bs-target="#task" type="button" role="tab">Task Analysis</button>
+  </li>
+</ul>
+
+<div class="tab-content" id="reportTabsContent">
+  
+  <!-- Employees Tab -->
+  <div class="tab-pane fade show active" id="employee" role="tabpanel">
+      <div class="card border-0 shadow-sm glass-card">
+          <div class="card-body p-4">
+               <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-user text-primary me-2"></i>Employee Summary Matrix</h5>
+               <div class="table-responsive">
+                   <table class="table table-hover align-middle">
+                       <thead class="table-light">
+                           <tr>
+                               <th>Employee</th>
+                               <th>Dept/Role</th>
+                               <th class="text-center">Assigned Clients</th>
+                               <th class="text-center">Total Tasks</th>
+                               <th class="text-center">Completed</th>
+                               <th class="text-center">Completion %</th>
+                               <th class="text-center">Avg Rating</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           @if(empSum != null) {
+                               foreach(var e in empSum) {
+                                   var compRate = e.TotalTasksAssigned > 0 ? (e.CompletedTasks * 100 / e.TotalTasksAssigned) : 0;
+                                   <tr>
+                                       <td class="fw-bold">@e.EmployeeName</td>
+                                       <td>@e.Department<br><small class="text-muted">@e.Designation</small></td>
+                                       <td class="text-center">@e.AssignedClients</td>
+                                       <td class="text-center">@e.TotalTasksAssigned</td>
+                                       <td class="text-center text-success fw-bold">@e.CompletedTasks</td>
+                                       <td class="text-center">
+                                           <div class="progress" style="height: 6px;">
+                                              <div class="progress-bar @(compRate > 75 ? "bg-success" : (compRate > 40 ? "bg-warning" : "bg-danger"))" style="width: @compRate%"></div>
+                                           </div>
+                                           <small class="text-muted">@compRate%</small>
+                                       </td>
+                                       <td class="text-center fw-bold text-primary">@e.AverageRating.ToString("0.0")</td>
+                                   </tr>
+                               }
+                           }
+                       </tbody>
+                   </table>
+               </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Clients Tab -->
+  <div class="tab-pane fade" id="client" role="tabpanel">
+       <div class="card border-0 shadow-sm glass-card">
+          <div class="card-body p-4">
+              <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-pie text-success me-2"></i>Client Engagement Metrics</h5>
+              <div class="table-responsive">
+                   <table class="table table-hover align-middle">
+                       <thead class="table-light">
+                           <tr>
+                               <th>Company</th>
+                               <th>Industry</th>
+                               <th>Onboarded</th>
+                               <th class="text-center">Dedicated Employees</th>
+                               <th>Account Health</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           @if(clientEng != null) {
+                               foreach(var c in clientEng) {
+                                   <tr>
+                                       <td class="fw-bold">@c.CompanyName</td>
+                                       <td><span class="badge bg-light text-dark border">@c.Industry</span></td>
+                                       <td>@c.CreatedDate.ToString("MMM yyyy")</td>
+                                       <td class="text-center">
+                                           @if(c.AssignedEmployees > 0) {
+                                               <span class="badge bg-primary rounded-pill px-3">@c.AssignedEmployees Assigned</span>
+                                           } else {
+                                               <span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-2">Unassigned</span>
+                                           }
+                                       </td>
+                                       <td>
+                                           @if(c.AssignedEmployees >= 2) { <span class="text-success fw-medium"><i class="fa-solid fa-check-circle me-1"></i>Healthy</span> }
+                                           else if (c.AssignedEmployees == 1) { <span class="text-warning fw-medium"><i class="fa-solid fa-circle-exclamation me-1"></i>At Risk</span> }
+                                           else { <span class="text-danger fw-medium"><i class="fa-solid fa-triangle-exclamation me-1"></i>Critical</span> }
+                                       </td>
+                                   </tr>
+                               }
+                           }
+                       </tbody>
+                   </table>
+               </div>
+          </div>
+       </div>
+  </div>
+
+  <!-- Tasks Tab -->
+  <div class="tab-pane fade" id="task" role="tabpanel">
+      <div class="row g-4">
+          @if(taskSum != null) {
+              foreach(var t in taskSum) {
+                  var color = t.Status == "Completed" ? "success" : (t.Status == "InProgress" ? "info" : "warning");
+                  <div class="col-md-4">
+                      <div class="card border-0 shadow-sm glass-card border-top border-@color border-4">
+                          <div class="card-body p-4 text-center">
+                              <h3 class="display-4 fw-bold text-@color mb-0">@t.Count</h3>
+                              <p class="text-muted fw-bold text-uppercase ls-1">@t.Status Tasks</p>
+                              
+                              @if(t.Status != "Completed" && t.OverdueTasks > 0) {
+                                  <div class="mt-3 pt-3 border-top">
+                                      <span class="text-danger fw-bold"><i class="fa-solid fa-fire me-1"></i> @t.OverdueTasks Overdue</span>
+                                  </div>
+                              }
+                          </div>
+                      </div>
+                  </div>
+              }
+          }
+      </div>
+  </div>
+</div>
+
+<style>
+    .nav-pills .nav-link { color: var(--text-main); }
+    .nav-pills .nav-link.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+</style>

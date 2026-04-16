@@ -1,0 +1,97 @@
+@model EmployeeCRM.Shared.DTOs.ClientDto
+@{
+    ViewData["Title"] = "Client Details";
+    var history = ViewBag.History as IEnumerable<EmployeeCRM.Shared.DTOs.EmployeeClientDto>;
+}
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm glass-card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                     <div>
+                        <h3 class="fw-bold mb-1">@Model.CompanyName</h3>
+                        <span class="badge bg-primary px-3 py-2 rounded-pill mt-2">@Model.Industry</span>
+                     </div>
+                     <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-arrow-left mt-1"></i></a>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-muted text-uppercase small fw-bold mb-3">Contact Information</h6>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-light rounded p-2 me-3 text-primary"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <div class="small text-muted">Contact Person</div>
+                            <div class="fw-medium">@Model.ContactPerson</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-light rounded p-2 me-3 text-primary"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <div class="small text-muted">Email</div>
+                            <div class="fw-medium">@Model.Email</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-light rounded p-2 me-3 text-primary"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <div class="small text-muted">Phone</div>
+                            <div class="fw-medium">@Model.Phone</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm glass-card h-100">
+            <div class="card-body p-4">
+                 <h5 class="fw-bold mb-4"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Assignment History</h5>
+                 
+                 @if (history != null && history.Any())
+                 {
+                     <div class="timeline">
+                         @foreach(var item in history)
+                         {
+                             <div class="d-flex mb-4 position-relative">
+                                 <div class="me-3 position-relative z-1">
+                                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center border border-white border-3" style="width: 40px; height: 40px; box-shadow: 0 0 0 1px var(--border-color);">
+                                         <i class="fa-solid fa-user-tie"></i>
+                                     </div>
+                                 </div>
+                                 <div class="pt-2">
+                                     <h6 class="fw-bold mb-1">Assigned to @item.EmployeeName</h6>
+                                     <div class="text-muted small">@item.AssignedDate.ToString("MMM dd, yyyy - hh:mm tt")</div>
+                                     <span class="badge bg-success mt-2">@item.Status</span>
+                                 </div>
+                             </div>
+                         }
+                     </div>
+                 }
+                 else
+                 {
+                     <div class="text-center text-muted py-5">
+                         <i class="fa-solid fa-user-xmark fs-1 mb-3 opacity-50"></i>
+                         <p>No employees have been assigned to this client yet.</p>
+                     </div>
+                 }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Simple CSS timeline line */
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 39px;
+    bottom: 20px;
+    width: 2px;
+    background: var(--border-color);
+}
+.timeline > div:last-child { margin-bottom: 0 !important; }
+</style>

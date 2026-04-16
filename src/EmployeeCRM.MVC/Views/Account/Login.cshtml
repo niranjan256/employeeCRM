@@ -1,0 +1,70 @@
+@model EmployeeCRM.Shared.DTOs.LoginDto
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+<div class="row w-100 m-0 vh-100 align-items-center justify-content-center bg-light">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-4 glass-card p-4">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; font-size: 24px;">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h2 class="fw-bold mb-1">Welcome Back</h2>
+                    <p class="text-muted">Sign in to Nexus CRM</p>
+                </div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <div asp-validation-summary="ModelOnly" class="mb-0"></div>
+                    </div>
+                }
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Success"]</div>
+                }
+
+                <form asp-action="Login" method="post">
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                    
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label fw-semibold">Username</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-user"></i></span>
+                            <input asp-for="Username" class="form-control border-start-0" placeholder="Enter username" />
+                        </div>
+                        <span asp-validation-for="Username" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label fw-semibold">Password</label>
+                         <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-key"></i></span>
+                            <input asp-for="Password" class="form-control border-start-0" type="password" placeholder="Enter password" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary-custom btn-lg">Sign In <i class="fa-solid fa-arrow-right ms-2"></i></button>
+                    </div>
+
+                    <div class="text-center text-muted small mt-4">
+                        Use demo accounts:<br />
+                        <b>admin</b> / <b>Admin@123</b><br />
+                        <b>ravi.kumar</b> (Manager) / <b>Manager@123</b><br />
+                        <b>pavan.kalyan</b> (Employee) / <b>Employee@123</b>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,124 @@
+@model EmployeeCRM.Shared.DTOs.DashboardDto
+@{
+    ViewData["Title"] = "Dashboard Overview";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card bg-gradient-primary shadow-sm glass-card">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-details">
+                <h3>@Model.TotalEmployees</h3>
+                <p>Total Employees</p>
+                <small class="opacity-75">@Model.ActiveEmployees Active</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card bg-gradient-success shadow-sm glass-card">
+            <div class="stat-icon"><i class="fa-solid fa-building"></i></div>
+            <div class="stat-details">
+                <h3>@Model.TotalClients</h3>
+                <p>Corporate Clients</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card bg-gradient-warning shadow-sm glass-card">
+            <div class="stat-icon"><i class="fa-solid fa-list-check"></i></div>
+            <div class="stat-details">
+                <h3>@Model.PendingTasks</h3>
+                <p>Pending Tasks</p>
+                <small class="opacity-75">Out of @Model.TotalTasks Total</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card bg-gradient-danger shadow-sm glass-card">
+            <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+            <div class="stat-details">
+                <h3>@Model.AverageRating.ToString("0.0")</h3>
+                <p>Avg Performance</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm glass-card h-100">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <h5 class="fw-bold"><i class="fa-solid fa-chart-pie me-2 text-primary"></i>Employees by Department</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="deptChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm glass-card h-100">
+             <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <h5 class="fw-bold"><i class="fa-solid fa-chart-bar me-2 text-success"></i>Task Status Overview</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="taskChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const deptLabels = @Json.Serialize(Model.DepartmentStats.Select(s => s.Department));
+        const deptData = @Json.Serialize(Model.DepartmentStats.Select(s => s.Count));
+        
+        new Chart(document.getElementById('deptChart'), {
+            type: 'doughnut',
+            data: {
+                labels: deptLabels,
+                datasets: [{
+                    data: deptData,
+                    backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' }
+                }
+            }
+        });
+
+        const taskLabels = @Json.Serialize(Model.TaskStatusStats.Select(s => s.Status));
+        const taskData = @Json.Serialize(Model.TaskStatusStats.Select(s => s.Count));
+
+        new Chart(document.getElementById('taskChart'), {
+            type: 'bar',
+            data: {
+                labels: taskLabels,
+                datasets: [{
+                    label: 'Tasks',
+                    data: taskData,
+                    backgroundColor: ['#f59e0b', '#0ea5e9', '#10b981'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { borderDash: [2, 4] } },
+                    x: { grid: { display: false } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
+}
